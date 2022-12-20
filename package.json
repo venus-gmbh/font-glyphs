@@ -1,9 +1,26 @@
 {
-  "name": "klokantech-noto-sans",
-  "version": "0.0.0",
+  "name": "@venus-gmbh/font-glyphs",
+  "version": "1.0.0",
+  "type": "module",
   "authors": [
-    "Petr Sloup <petr.sloup@klokantech.com>"
+    "Petr Sloup <petr.sloup@klokantech.com>",
+    "Dominik Lippl <dl@venus.bayern> https://dominiklippl.de"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/venus-gmbh/font-glyphs.git"
+  },
+  "keywords": [
+    "font",
+    "gylphs",
+    "osm",
+    "openmaptiles"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/venus-gmbh/font-glyphs/issues"
+  },
+  "homepage": "https://venus.bayern",
   "dependencies": {
     "@mapbox/glyph-pbf-composite": "0.0.3",
     "fontnik": "0.6.0"
