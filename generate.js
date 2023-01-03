@@ -20,6 +20,10 @@ for (const dir of fs.readdirSync('.')) {
     if (!fs.lstatSync(dir).isDirectory())
         continue;
 
+    // ignore files that start with a _
+    if (dir.startsWith('_'))
+        continue;
+
     let fonts = [];
 
     try {
