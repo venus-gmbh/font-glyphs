@@ -6,7 +6,8 @@ import glyphCompose from "@mapbox/glyph-pbf-composite";
 const DEBUG = false;
 let sizeSumTotal = 0;
 
-const outputDir = '_output';
+const fontsDir = './fonts';
+const outputDir = './_output';
 const process = [];
 const processed = [];
 
@@ -14,10 +15,14 @@ if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);
 }
 
+if (!fs.existsSync(fontsDir)) {
+    fs.mkdirSync(fontsDir);
+}
+
 // read font dirs in current dir
-for (const dir of fs.readdirSync('.')) {
+for (const dir of fs.readdirSync(fontsDir)) {
     // check if it is a dir
-    if (!fs.lstatSync(dir).isDirectory())
+    if (!fs.lstatSync(path.join(fontsDir, dir)).isDirectory())
         continue;
 
     // ignore files that start with a _
@@ -27,8 +32,8 @@ for (const dir of fs.readdirSync('.')) {
     let fonts = [];
 
     try {
-        // if there is no font-glyphs.json this throws a exception
-        fonts = require(path.resolve(__dirname, dir, 'font-glyphs.json'));
+        // if there is no font-glyphs.json this throws an exception
+        fonts = require(path.resolve(__dirname, path.join(fontsDir, dir), 'font-glyphs.json'));
         fonts.forEach(function (font) {
             font.sources = font.sources.filter(function (f) {
                 // skip sources starting with '//' -- these are "commented"
@@ -38,7 +43,7 @@ for (const dir of fs.readdirSync('.')) {
     } catch (e) {
         fonts = [];
 
-        fs.readdirSync(dir).forEach(function (file) {
+        fs.readdirSync(path.join(fontsDir, dir)).forEach(function (file) {
             if (path.extname(file) === '.ttf' || path.extname(file) === '.otf') {
                 // compatible font name generation with genfontgl
                 fonts.push({
@@ -55,7 +60,7 @@ for (const dir of fs.readdirSync('.')) {
         continue;
 
     process.push({
-        dir,
+        dir: path.join(fontsDir, dir),
         fonts
     });
 }
@@ -84,6 +89,7 @@ const doFonts = function (dir, fonts) {
         const doRange = function (start, end) {
             return Promise.all(config.sources.map(function (sourceName) {
                 const source = sourceFonts[sourceName];
+
                 if (!source) {
                     console.log('[%s] Source "%s" not found', config.name, sourceName);
                     return Promise.resolve();
